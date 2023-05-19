@@ -7,10 +7,19 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+          'baloo' : ['Baloo Bhaijaan 2', 'cursive'],
+          'bungeeHairline' : ['Bungee Hairline', 'cursive'],
+          'bungeeInline' : ['Bungee Inline', 'cursive'],
+          'freckleFace' : ['Freckle Face', 'cursive']     
+      },
+      colors: {
+        'primary': '#00FFFF',
+        'secondary': '#FF00FF',
+        'accent': '#00FF00',
+      },
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'bgcolor': 'radial-gradient(#6600FF, #9933FF)',
       },
     },
   },
