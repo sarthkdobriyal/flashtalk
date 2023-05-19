@@ -3,11 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
 import upstashRedisClient from "@upstash/redis";
 import { db } from "./db";
-
-const redis = upstashRedisClient(
-  process.env.UPSTASH_REDIS_URL,
-  process.env.UPSTASH_REDIS_TOKEN
-);
+// import { fetchRedis } from '@/helpers/redis'
 
 export const authOptions:NextAuthOptins =  {
   adapter: UpstashRedisAdapter(db),
@@ -16,7 +12,8 @@ export const authOptions:NextAuthOptins =  {
   },
   pages:{
     signIn: '/login',
-  }
+  },
+  secret: process.env.NEXTAUTH_SECRET!,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -25,12 +22,27 @@ export const authOptions:NextAuthOptins =  {
   ],
   callbacks:{
     async jwt ({token, user}) {
-      const dbUser = await db.get({user: `${token.id}`}) as User | null
+      const dbUser = await db.get(`user:${token.id}`) as User | null
+      // const dbUserResult = (await fetchRedis('get', `user:${token.id}`)) as
+      //   | string
+      //   | null
+
+      //   if (!dbUserResult) {
+      //     if (user) {
+      //       token.id = user!.id
+      //     }
+  
+      //     return token
+      //   }
+
       if(!dbUser) {
         token.id = user!.id
         return token
       }
-      return{
+
+      // const dbUser = JSON.parse(dbUserResult) as User
+
+      return {
         id: dbUser.id,
         name: dbUser.name, 
         email: dbUser.email,

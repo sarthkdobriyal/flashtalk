@@ -1,16 +1,16 @@
 import { ButtonHTMLAttributes, FC } from 'react'
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
-import Loader2 from 'lucide-react'
+import {Loader2} from 'lucide-react'
 import {cn} from  '@/lib/utils'
 
 
 const buttonVariants = cva(
-    'active:scale-95 inline-flex items-center justify-center rounded-md text-sm font-baloo font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-700 focus:ring-primary disabled:opacity-50 disabled:pointer-events-none',
+    'active:scale-95 inline-flex items-center justify-center rounded-md text-base font-bungeeInline font-medium tracking-widest transition-colors focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-slate-700 focus:ring-primary disabled:opacity-50 disabled:pointer-events-none',
     {
         variants: {
             variant: {
-                default: 'bg-secondary text-white hover:bg-pink-700 ',
+                default: 'bg-secondary text-white hover:bg-pink-500 ',
                 ghost: 'bg-transparent text-slate-900 hover:bg-slate-700 hover:text-slate-400',
             },
             size: {

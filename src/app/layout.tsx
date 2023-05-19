@@ -1,4 +1,5 @@
 import './globals.css'
+import Providers from '../components/Providers'
 
 export const metadata = {
   title: 'flashTalk',
@@ -16,7 +17,11 @@ export default function RootLayout({
         <title>{metadata.title}</title>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"></link>
       </head>
-      <body className='font-baloo'>{children}</body>
+      <body className='font-baloo'>
+      <Providers>
+        {children}
+      </Providers>
+        </body>
     </html>
   )
 }

@@ -1,26 +1,42 @@
-'use-client'
+'use client'
 
 import { FC, useState } from 'react'
-import Button from '../../components/ui/button'
+import Button from '../../components/ui/Button'
+import Logo from '../../components/ui/Logo'
+import {signIn} from 'next-auth/react'
+import { toast } from 'react-hot-toast'
+
+
+
+
 
 interface pageProps {
   
 }
 
-async const loginWithGoogle = () => {
 
-}
 
-const page: FC<pageProps> = ({}) => {
+const Login: FC<pageProps> = ({}) => {
 
-    const [iseLoading, setIsLoading] = useState<boolean>(false)
-  return <>
-        <div className='flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8 '>
-            <div className="w-full flex flex-col items-center max-w-md space-y-8 ">
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const loginWithGoogle = async () => {
+      setIsLoading(true)
+      try{
+        await signIn('google')
+      }catch(err){
+        toast.error('Something went wrong with login')
+      }finally{
+        setIsLoading(false)
+      }
+    }
+
+  return (<>
+        <div className='bg-bgcolor first-letter:flex min-h-screen min-w-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 '>
+            <div className="w-full flex flex-col items-center max-w-screen space-y-8 ">
                 <div className="flex flex-col gap-8 items-center">
                     {/* logo */}
-                <h1 className="text-4xl md:text-6xl font-semibold font-freckleFace text-center text-secondary tracking-widest ">fl<span className='text-primary'>ash<span className='text-slate-700'>Talk.</span></span></h1>    
-      <Button children={"Click Me"} />
+                  <Logo />
                 <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>Sign In to your account</h2>
                 </div>
                 <Button isLoading={isLoading} type='button' className='max-w-sm mx-auto w-full' onClick={loginWithGoogle}>
@@ -59,7 +75,7 @@ const page: FC<pageProps> = ({}) => {
 
         </div>
 
-  </>
+  </>)
 }
 
-export default page
+export default Login
