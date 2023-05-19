@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes, FC } from 'react'
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
 import Loader2 from 'lucide-react'
+import {cn} from  '@/lib/utils'
 
 
 const buttonVariants = cva(
