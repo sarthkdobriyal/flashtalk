@@ -1,8 +1,8 @@
 'use client'
 
 import { FC, useState } from 'react'
-import Button from '../../components/ui/Button'
-import Logo from '../../components/ui/Logo'
+import Button from '@/components/ui/Button'
+import Logo from '@/components/ui/Logo'
 import {signIn} from 'next-auth/react'
 import { toast } from 'react-hot-toast'
 
@@ -37,7 +37,7 @@ const Login: FC<pageProps> = ({}) => {
                 <div className="flex flex-col gap-8 items-center">
                     {/* logo */}
                   <Logo />
-                <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>Sign In to your account</h2>
+                <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-800'>Sign In to your account</h2>
                 </div>
                 <Button isLoading={isLoading} type='button' className='max-w-sm mx-auto w-full' onClick={loginWithGoogle}>
                 {isLoading ? null : (
