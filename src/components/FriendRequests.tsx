@@ -2,6 +2,8 @@
 import { Check, Cross, UserPlus, X } from 'lucide-react'
 import Image from 'next/image'
 import { FC, useState } from 'react'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 interface FriendRequestsProps {
     IncomingFriendRequests: IncomingFriendRequest[],
@@ -13,19 +15,39 @@ const FriendRequests: FC<FriendRequestsProps> = ({
     sessionId
 }) => {
 
+    const router = useRouter();
+
     const [friendRequests, setFriendRequests] = useState<IncomingFriendRequest[]>(
         IncomingFriendRequests
     )
 
-    
+    const acceptFriend = async (senderId) => {
+        await axios.post('/api/friends/accept', {id : senderId})
 
+        setFriendRequests((prev) => prev.filter((req) => req.senderId !== senderId))
+
+        router.refresh()
+
+    }
+
+
+    const denyFriend = async (senderId) => {
+        await axios.post('/api/friends/deny', {id : senderId})
+
+        setFriendRequests((prev) => prev.filter((req) => req.senderId !== senderId))
+
+        router.refresh()
+
+    }
+
+    console.log(friendRequests)
 
 
   return <>
     {
-        friendRequests === 0 ? (
+        friendRequests.length === 0 ? (
             <p className='text-accent text-base'>You have no friend requests</p>
-        ): (
+        ) : (
             friendRequests.map((request) => (
                 <div key={request.senderId} className='flex gap-4 items-center  p-2 hover:shadow-lg rounded-lg'>
                     {
@@ -45,8 +67,8 @@ const FriendRequests: FC<FriendRequestsProps> = ({
                     <p className='text-gray-300 font-baloo text-base'>{request.senderName}</p>
                     <p className='text-gray-400 font-baloo text-sm'>{request.senderEmail}</p>
                     </div>
-                    <button aria-label='deny friend' className='w-8 h-8 bg-primary hover:bg-cyan-600 grid place-items-center rounded-full transition hover:shadow-md '><Check className='font-semibold text-gray-400 w-3/4 h-3/4'/></button>
-                    <button aria-label='accept friend' className='w-8 h-8 bg-red-500 hover:bg-red-900 grid place-items-center rounded-full transition hover:shadow-md '><X className='font-semibold text-gray-400   w-3/4 h-3/4' /></button>
+                    <button onClick={() => acceptFriend(request.senderId)} aria-label='deny friend' className='w-8 h-8 bg-primary hover:bg-cyan-600 grid place-items-center rounded-full transition hover:shadow-md '><Check className='font-semibold text-gray-400 w-3/4 h-3/4'/></button>
+                    <button onClick={() => denyFriend(request.senderId)} aria-label='accept friend' className='w-8 h-8 bg-red-500 hover:bg-red-900 grid place-items-center rounded-full transition hover:shadow-md '><X className='font-semibold text-gray-400   w-3/4 h-3/4' /></button>
                 </div>
             ))
         )
