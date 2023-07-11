@@ -57,7 +57,7 @@ const AddFriendButton: FC<AddFriendButtonProps> = ({}) => {
 
   return <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm">
     <label htmlFor="email" className='block text-sm font-baloo font-medium leading-6 text-gray-900'>
-      Enter a friend's Email: 
+      Enter a friend&apos;s Email: 
     </label>
 
     <div className="mt-2 flex gap-4">
