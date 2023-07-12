@@ -5,10 +5,12 @@ import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
 import Logo from '@/components/ui/Logo'
 import FriendRequestSidebarOption from '@/components/FriendRequestSidebarOption'
+import SidebarChatList from '@/components/SidebarChatList'
 import { Icon, Icons } from '../../../components/Icons'
 import Image from 'next/image'
 import SignOutButton from '@/components/SignOutButton'
 import { fetchRedis } from '@/helper/redis'
+import { getFriendsByUserId } from '@/helper/getFriends'
 
 
 interface LayoutProps {
@@ -39,6 +41,8 @@ const Layout= async ({children}: LayoutProps) => {
     const session = await getServerSession(authOptions)
     if(!session) notFound()
 
+    const friends = await getFriendsByUserId(session.user.id)
+
 
     const unseenRequestCount = (await fetchRedis('smembers', `user:${session.user.id}:incoming_friend_requests`)).length as User[]
 
@@ -51,14 +55,21 @@ const Layout= async ({children}: LayoutProps) => {
             <Logo />
         </Link>
 
-        <div className="text-xl font-semibold leading-6 text-pink-900 font-baloo ">
-            Your Chats -:
-        </div>
+
+        {
+            friends.length > 0 && (
+                <div className="text-xl font-semibold leading-6 text-pink-900 font-baloo ">
+                    Your Chats -
+                </div>
+            )
+        }
+
+        
 
         <nav className="flex flex-1 flex-col">
             <ul role='list' className='flex flex-1 flex-col gap-y-7'>
                 <li>
-                    //chats this user has
+                    <SidebarChatList sessionId={session.user.id} friends={friends} />
                 </li>
                 <li>
                     <div className="text-xl font-semibold leading-6 text-pink-900 font-baloo ">Overview</div>
@@ -70,7 +81,7 @@ const Layout= async ({children}: LayoutProps) => {
                                 
                                 return (
                                     <li key={option.id}>
-                                        <Link href={option.href} className='text-slate-700 hover:text-white hover:bg-gray-600 group flex rounded-md p-2 gap-3 leading-6 text-sm font-semibold '>
+                                        <Link href={option.href} className='text-slate-700 hover:text-white hover:bg-gray-600 group flex rounded-md p-2 gap-4 leading-6 text-base font-semibold '>
                                             <span className='text-accent border-gray-400 group-hover:border-indigo-500 group-hover:text-white h-6 w-6 flex shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium '>
                                                 <Icon className='h-4 w-4' />
                                             </span>
@@ -82,15 +93,15 @@ const Layout= async ({children}: LayoutProps) => {
                                 )
                             })
                         }
-                    </ul>
-                </li>
-
                 <li>
                     <FriendRequestSidebarOption 
                         sessionId={session.user.id}
                         initialUnseenRequests={unseenRequestCount}
                     />
                 </li>
+                    </ul>
+                </li>
+
 
 
                 <li className="mt-auto -mx-2 flex items-center justify-start gap-x-2">
