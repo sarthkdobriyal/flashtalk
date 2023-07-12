@@ -5,6 +5,9 @@ import { notFound } from 'next/navigation'
 import { fetchRedis } from '@/helper/redis'
 import { messageArrayValidator } from '../../../../../lib/validations/message'
 import { db } from '@/lib/db'
+import Image from 'next/image'
+import Messages from '@/components/Messages'
+import ChatInput from '@/components/ChatInput'
 
 interface PageProps {
   params: {
@@ -27,7 +30,6 @@ async function getChatMessages(chatId: string) {
 
     }catch(e) {
         console.log(e.message)
-        return notFound()
     }
 }
 
@@ -47,12 +49,43 @@ const page: FC = async ({params} : PageProps ) => {
     
     const chatPartenerId = user.id === userId1 ? userId2 : userId1
 
-    const chatPartener =  ( await db.get(`user:${chatPartenerId}`)) as User
+    const chatPartner =  ( await db.get(`user:${chatPartenerId}`)) as User
 
     const initialMessages = await getChatMessages(chatId)
 
 
-  return <div>{chatId}</div>
+  return <div 
+            className='flex flex-col justify-between flex-1 h-full max-h-[calc(100vh-6rem)] px-4'
+  >
+    <div className="flex items-center justify-between py-3 border-b-2 border-gray-400 ">
+        <div className="relative flex items-center space-x-4">
+            <div className="relative">
+                <div className="relative w-8 sm:w-12 h-8 sm:h-12">
+                    <Image 
+                        fill
+                        referrerPolicy="no-referrer"
+                        src={chatPartner.image}
+                        alt={chatPartner.name}
+                        className="rounded-full"
+                    />
+                </div>
+            </div>
+
+            <div className="flex flex-col leading-tight">
+                <div className="text-xl flex items-center">
+                    <span className="text-slate-900 mr-3 font-semibold">{chatPartner.name}</span>
+                </div>
+
+                <span className='text-sm text-gray-700'>{chatPartner.email}</span>
+            </div>
+
+
+        </div>
+    </div>
+
+        <Messages initialMessages={initialMessages} sessionId={session.user.id} />
+        <ChatInput chatPartner={chatPartner} />
+  </div>
 }
 
 export default page

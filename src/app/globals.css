@@ -4,3 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
+.scrollbar-w-2::-webkit-scrollbar {
+    width: 0.25rem;
+    height: 0.25rem;
+}
+
+.scrollbar-thumb-violet::-webkit-scrollbar-thumb{
+    --bg-opacity: 1;        
+    background-color: rgb(104, 19, 158);
+    background-color: rgba(104, 19, 158, var(--bg-opacity));
+
+}
+
+.scrollbar-thumb-rounded ::-webkit-scrollbar-thumb{
+    border-radius: 0.5rem;
+}
+
+.scrollbar-track-pink-lighter::-webkit-scrollbar-track{
+    --bg-opacity: 1;
+    background-color: rgb(202, 99, 185);
+    background-color: rgba(202, 99, 185, var(--bg-opacity));
+
+}
