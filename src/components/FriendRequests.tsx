@@ -23,25 +23,33 @@ const FriendRequests: FC<FriendRequestsProps> = ({
         IncomingFriendRequests
     )
 
-    const friendRequestHandler = ({senderId, senderEmail, senderImage, senderName}: IncomingFriendRequest) => {
-        setFriendRequests((prev) => [...prev, {
-            senderId: senderId,
-            senderEmail: senderEmail,
-            senderImage: senderImage ? senderImage : null,
-            senderName: senderName
-        } ])
-    }
     
         useEffect(() => {
             pusherClient.subscribe(
                 toPusherKey(`user:${sessionId}:incoming_friend_requests`)
             )
+            
+
+            const friendRequestHandler = ({senderId, senderEmail, senderImage, senderName}: IncomingFriendRequest) => {
+                setFriendRequests((prev) => [...prev, {
+                    senderId: senderId,
+                    senderEmail: senderEmail,
+                    senderImage: senderImage ? senderImage : null,
+                    senderName: senderName
+                } ])
+            }
+
+            
+           
 
             pusherClient.bind('incoming_friend_requests', friendRequestHandler )
+            
 
             return () => {
                 pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:incoming_friend_requests`))
+                
                 pusherClient.unbind('incoming_friend_requests', friendRequestHandler )
+                
             }
 
         }, [sessionId])

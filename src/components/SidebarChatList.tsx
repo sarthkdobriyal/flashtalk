@@ -37,11 +37,12 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId, friends}) => {
         pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`))
 
         const newFriendHandler = () => {
+            console.log('new friend handler')
             router.refresh()
-        }
-
+        }       
+  
         const chatHandler = (message: ExtendedMessage) => {
-            console.log("Handler working", message)
+            
             const shoulNotify = pathname !== `/dashboard/chat/${chatIdConstructor(sessionId, message.senderId)}`
             if(!shoulNotify){
                 return;

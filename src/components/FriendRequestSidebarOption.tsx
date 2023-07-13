@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { User } from 'lucide-react'
 import { pusherClient } from '@/lib/pusher'
 import { toPusherKey } from '@/lib/utils'
+import { useRouter} from 'next/navigation'
  
 interface FriendRequestSidebarOptionProps {
     initialUnseenRequests: number,
@@ -15,36 +16,46 @@ const FriendRequestSidebarOption: FC<FriendRequestSidebarOptionProps> = ({
     sessionId
 }) => {
 
+    const router = useRouter()
+
     const [unseenRequests, setUnseenRequests] = useState<number>(
         initialUnseenRequests
     )
 
-    const friendRequestHandler = () => {
-        setUnseenRequests((prev) => prev+1)
-    }
-    const denyRequestHandler = () => {
-        setUnseenRequests((prev) => prev-1)
-    }
     
         useEffect(() => {
             pusherClient.subscribe(
                 toPusherKey(`user:${sessionId}:incoming_friend_requests`)
             )
 
+            pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`))
+
+
+            const newFriendHandler = () => {
+                console.log("sidebar handler")
+                setUnseenRequests((prev) => prev - 1)
+                router.refresh()
+            } 
+
+            
+            const friendRequestHandler = ({senderId, senderEmail, senderImage, senderName}: IncomingFriendRequest) => {
+                setUnseenRequests((prev) => prev + 1)
+                console.log("friend request handdler sidebar")
+            }
+
             pusherClient.bind('incoming_friend_requests', friendRequestHandler )
-            pusherClient.bind('deny_request', denyRequestHandler )
-            pusherClient.bind('accept_request', denyRequestHandler )
+            pusherClient.bind('new_friend',  newFriendHandler)
+
             
             return () => {
                 pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:incoming_friend_requests`))
-                pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:deny_request`))
-                pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:accept_request`))
+                pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`))
+                pusherClient.unbind('new_friend',newFriendHandler )
                 pusherClient.unbind('incoming_friend_requests', friendRequestHandler )
-                pusherClient.unbind('deny_request', denyRequestHandler )
-                pusherClient.unbind('accept_request', denyRequestHandler )
+
             }
 
-        }, [sessionId])
+        }, [sessionId, router])
 
 
   return <Link href='/dashboard/requests'
