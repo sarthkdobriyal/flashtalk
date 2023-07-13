@@ -1,7 +1,9 @@
 'use client'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { User } from 'lucide-react'
+import { pusherClient } from '@/lib/pusher'
+import { toPusherKey } from '@/lib/utils'
  
 interface FriendRequestSidebarOptionProps {
     initialUnseenRequests: number,
@@ -17,6 +19,36 @@ const FriendRequestSidebarOption: FC<FriendRequestSidebarOptionProps> = ({
         initialUnseenRequests
     )
 
+    const friendRequestHandler = () => {
+        setUnseenRequests((prev) => prev+1)
+    }
+    const denyRequestHandler = () => {
+        setUnseenRequests((prev) => prev-1)
+    }
+    
+        useEffect(() => {
+            pusherClient.subscribe(
+                toPusherKey(`user:${sessionId}:incoming_friend_requests`)
+            )
+            pusherClient.subscribe(
+                toPusherKey(`user:${sessionId}:deny_request`)
+            )
+            pusherClient.subscribe(toPusherKey(`user:${sessionId}:accept_request`))
+
+            pusherClient.bind('incoming_friend_requests', friendRequestHandler )
+            pusherClient.bind('deny_request', denyRequestHandler )
+            pusherClient.bind('accept_request', denyRequestHandler )
+            
+            return () => {
+                pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:incoming_friend_requests`))
+                pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:deny_request`))
+                pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:accept_request`))
+                pusherClient.unbind('incoming_friend_requests', friendRequestHandler )
+                pusherClient.unbind('deny_request', denyRequestHandler )
+                pusherClient.unbind('accept_request', denyRequestHandler )
+            }
+
+        }, [])
 
 
   return <Link href='/dashboard/requests'

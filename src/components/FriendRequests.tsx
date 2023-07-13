@@ -1,9 +1,11 @@
 'use client'
 import { Check, Cross, UserPlus, X } from 'lucide-react'
 import Image from 'next/image'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { pusherClient } from '@/lib/pusher'
+import { toPusherKey } from '@/lib/utils'
 
 interface FriendRequestsProps {
     IncomingFriendRequests: IncomingFriendRequest[],
@@ -20,6 +22,29 @@ const FriendRequests: FC<FriendRequestsProps> = ({
     const [friendRequests, setFriendRequests] = useState<IncomingFriendRequest[]>(
         IncomingFriendRequests
     )
+
+    const friendRequestHandler = ({senderId, senderEmail, senderImage, senderName}: IncomingFriendRequest) => {
+        setFriendRequests((prev) => [...prev, {
+            senderId: senderId,
+            senderEmail: senderEmail,
+            senderImage: senderImage ? senderImage : null,
+            senderName: senderName
+        } ])
+    }
+    
+        useEffect(() => {
+            pusherClient.subscribe(
+                toPusherKey(`user:${sessionId}:incoming_friend_requests`)
+            )
+
+            pusherClient.bind('incoming_friend_requests', friendRequestHandler )
+
+            return () => {
+                pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:incoming_friend_requests`))
+                pusherClient.unbind('incoming_friend_requests', friendRequestHandler )
+            }
+
+        }, [])
 
     const acceptFriend = async (senderId) => {
         await axios.post('/api/friends/accept', {id : senderId})
@@ -55,6 +80,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
                             <div className='relative h-8 w-8 bg-transparent rouneded-full'>
                             <Image
                                 fill
+                                sizes='100%'
                                 referrerPolicy='no-referrer'
                                 className='rounded-full'
                                 src={request.senderImage}

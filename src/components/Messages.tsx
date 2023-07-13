@@ -20,7 +20,7 @@ const Messages: FC<MessagesProps> = ({initialMessages, sessionId, sessionImg, ch
 
 
     const formatTimestamp = (timestamp) => {
-        return format(timestamp, 'HH:MM:SS:dd/mm/yyyy')
+        return format(timestamp, 'HH:MM:dd/mm/yy')
     }
 
 

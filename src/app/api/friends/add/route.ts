@@ -6,6 +6,8 @@ import {fetchRedis} from '@/helper/redis'
 import { db } from '@/lib/db'
 import { z } from 'zod'
 import { AxiosError } from 'axios'
+import {pusherServer} from '@/lib/pusher'
+import { toPusherKey } from '@/lib/utils'
 
 export const POST = async (req: Request) => {
     try{
@@ -39,9 +41,18 @@ export const POST = async (req: Request) => {
         const isAlreadyfriend = await  fetchRedis('sismember', `user:${session.user.id}:friends`, idToAdd) as 0 | 1
         if(isAlreadyfriend) return new Response('Already Friends', {status: 400})
 
+        
         //valid request
-        await db.sadd(`user:${idToAdd}:incoming_friend_requests`, session.user.id)
-
+        pusherServer.trigger(
+            toPusherKey(`user:${idToAdd}:incoming_friend_requests`), 'incoming_friend_requests', {
+                senderId: session.user.id,
+                senderEmail: session.user.email,
+                senderImage: session.user.image,
+                senderName: session.user.name
+            }
+            )
+            await db.sadd(`user:${idToAdd}:incoming_friend_requests`, session.user.id)
+            
         return new Response('Friend request sent', {status: 200})
 
     }catch(e) { 

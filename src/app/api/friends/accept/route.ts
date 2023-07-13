@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth'
 import { fetchRedis } from '@/helper/redis'
 import { db} from '@/lib/db'
+import {pusherServer} from '@/lib/pusher'
+import { toPusherKey } from '@/lib/utils'
 
 export async function POST(req: Request) {
     try{
@@ -22,6 +24,8 @@ export async function POST(req: Request) {
         //verify user has sent request
         const hasFriendRequest = await fetchRedis('sismember', `user:${session.user.id}:incoming_friend_requests`, idToAdd)
         if(!hasFriendRequest) return new Response('No friend request ', {status: 400})
+
+        pusherServer.trigger(toPusherKey(`user:${session.user.id}:accept_request`), 'accept_request', {})
 
         await db.sadd(`user:${session.user.id}:friends`, idToAdd)
         await db.sadd(`user:${idToAdd}:friends`, session.user.id)
