@@ -28,6 +28,7 @@ export async function POST(req: Request) {
 
 
         pusherServer.trigger(toPusherKey(`user:${idToAdd}:friends`), 'new_friend', {})
+        pusherServer.trigger(toPusherKey(`user:${session.user.id}:friends`), 'new_friend', {})
 
         await db.sadd(`user:${session.user.id}:friends`, idToAdd)
         await db.sadd(`user:${idToAdd}:friends`, session.user.id)

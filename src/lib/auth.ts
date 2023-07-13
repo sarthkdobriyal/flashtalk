@@ -4,7 +4,6 @@ import { UpstashRedisAdapter } from "@next-auth/upstash-redis-adapter";
 import upstashRedisClient from "@upstash/redis";
 import { db } from "./db";
 import { fetchRedis } from "@/helper/redis";
-// import { fetchRedis } from '@/helpers/redis'
 
 export const authOptions:NextAuthOptins =  {
   adapter: UpstashRedisAdapter(db),

@@ -1,4 +1,4 @@
-import { User, getServerSession } from 'next-auth'
+import {  getServerSession } from 'next-auth'
 import { authOptions} from '@/lib/auth'
 import { FC } from 'react'
 import { notFound } from 'next/navigation'
@@ -9,12 +9,12 @@ import Image from 'next/image'
 import Messages from '@/components/Messages'
 import ChatInput from '@/components/ChatInput'
 
+
 interface PageProps {
   params: {
     chatId: string
   }
 }
-
 
 async function getChatMessages(chatId: string) {
     try{
@@ -29,19 +29,19 @@ async function getChatMessages(chatId: string) {
         return messages
 
     }catch(e) {
-        console.log(e.message)
+        notFound()
     }
 }
 
 
-const page: FC = async ({params} : PageProps ) => {
+const page = async ({params} : PageProps ) => {
 
     const { chatId } = params
 
     const session = await getServerSession(authOptions)
     if(!session) return notFound()
 
-    const { user } = session
+    const user = session?.user
 
     const [userId1, userId2] = chatId.split('--')
 
@@ -53,7 +53,7 @@ const page: FC = async ({params} : PageProps ) => {
 
     const initialMessages = await getChatMessages(chatId)
 
-
+     
   return <div 
             className='flex flex-col justify-between flex-1 h-full max-h-[calc(100vh-2rem)] px-4'
   >
@@ -84,7 +84,7 @@ const page: FC = async ({params} : PageProps ) => {
         </div>
     </div>
 
-        <Messages initialMessages={initialMessages} sessionId={session.user.id} chatPartner={chatPartner} sessionImg={session.user.image} chatId={chatId} />
+        <Messages initialMessages={initialMessages} sessionId={session?.user.id} chatPartner={chatPartner} sessionImg={session?.user.image} chatId={chatId} />
         <ChatInput chatId={chatId} chatPartner={chatPartner} />
   </div>
 }

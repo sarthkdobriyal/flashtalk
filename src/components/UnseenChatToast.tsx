@@ -14,7 +14,7 @@ interface UnseenChatToastProps {
 }
 
 const UnseenChatToast: FC<UnseenChatToastProps> = ({t, senderId, sessionId, senderImage, senderName, senderMessage}) => {
-  return <div className={cn('max-w-md w-full bg-white shadow-lg pointer-events-auto flex ring-1 ring-opacity-5', 
+  return <div className={cn('max-w-md w-full bg-slate-400 shadow-lg pointer-events-auto flex ring-1 ring-opacity-5 rounded-md', 
     {
         'animate-enter': t.visible,
         'animate-leave': !t.visible
