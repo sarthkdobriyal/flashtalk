@@ -55,7 +55,7 @@ const page: FC = async ({params} : PageProps ) => {
 
 
   return <div 
-            className='flex flex-col justify-between flex-1 h-full max-h-[calc(100vh-6rem)] px-4'
+            className='flex flex-col justify-between flex-1 h-full max-h-[calc(100vh-2rem)] px-4'
   >
     <div className="flex items-center justify-between py-3 border-b-2 border-gray-400 ">
         <div className="relative flex items-center space-x-4">
@@ -83,8 +83,8 @@ const page: FC = async ({params} : PageProps ) => {
         </div>
     </div>
 
-        <Messages initialMessages={initialMessages} sessionId={session.user.id} />
-        <ChatInput chatPartner={chatPartner} />
+        <Messages initialMessages={initialMessages} sessionId={session.user.id} chatPartner={chatPartner} sessionImg={session.user.image} />
+        <ChatInput chatId={chatId} chatPartner={chatPartner} />
   </div>
 }
 
