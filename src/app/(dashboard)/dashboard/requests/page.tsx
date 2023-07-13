@@ -6,7 +6,7 @@ import { fetchRedis} from '@/helper/redis'
 import FriendRequests from '@/components/FriendRequests'
 
 
-const page: FC= async () => {
+const page = async () => {
 
 
     const session = await getServerSession(authOptions)
@@ -16,13 +16,17 @@ const page: FC= async () => {
     const incomingSenderIds = await fetchRedis('smembers', `user:${session.user.id}:incoming_friend_requests` ) as string[]
 
     const incomingFriendRequests = await Promise.all(
-      incomingSenderIds.map(async (senderId) => {
-        const sender = (await fetchRedis('get', `user:${senderId}`)) as User
+      incomingSenderIds.map(async (senderId) => {     
+        const rawSender = (await fetchRedis('get', `user:${senderId}`)) as string
+        const sender = JSON.parse(rawSender);
+        console.log(sender)
+        console.log(rawSender)
+                  
         return {
           senderId,
-          senderName: JSON.parse(sender).name,
-          senderEmail: JSON.parse(sender).email,
-          senderImage: JSON.parse(sender).image,
+          senderName: sender.name,
+          senderEmail: sender.email,
+          senderImage: sender.image,
         }
       } )
       )

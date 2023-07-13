@@ -11,7 +11,7 @@ interface ChatInputProps {
     chatPartner: User
 }
 
-const ChatInput: FC =  ({chatId,chatPartner} : ChatInputProps) => {
+const ChatInput: FC<ChatInputProps> =  ({chatId,chatPartner}) => {
 
     const textareaRef = useRef<HTMLTextAreaElement>(null)
     const [input, setInput] = useState<string>('')

@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { fetchRedis } from "@/helpers/redis";
 import { db } from "@/lib/db";
 import {pusherServer} from '@/lib/pusher'
 import { toPusherKey } from '@/lib/utils'

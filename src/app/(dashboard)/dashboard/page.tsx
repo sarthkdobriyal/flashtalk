@@ -3,13 +3,9 @@ import  {db}  from '../../../lib/db'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
-interface pageProps {
-  
-}
 
 
-
-const Dashboard: FC<pageProps> = async ({}) => {
+const page= async () => {
 
   const session = await getServerSession(authOptions)
 
@@ -22,4 +18,4 @@ const Dashboard: FC<pageProps> = async ({}) => {
 
 }
 
-export default Dashboard    
+export default page    

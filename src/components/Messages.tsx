@@ -39,7 +39,7 @@ const Messages: FC<MessagesProps> = ({initialMessages, sessionId, sessionImg, ch
     }, [chatId])
 
 
-    const formatTimestamp = (timestamp) => {
+    const formatTimestamp = (timestamp: number) => {
         return format(timestamp, 'HH:MM:dd/mm/yy')
     }
 

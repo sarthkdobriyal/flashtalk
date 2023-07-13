@@ -36,12 +36,12 @@ async function getChatMessages(chatId: string) {
 
 const page = async ({params} : PageProps ) => {
 
-    const { chatId } = params
+    const { chatId } = params     
 
     const session = await getServerSession(authOptions)
     if(!session) return notFound()
 
-    const user = session?.user
+    const user = session.user 
 
     const [userId1, userId2] = chatId.split('--')
 
@@ -84,7 +84,7 @@ const page = async ({params} : PageProps ) => {
         </div>
     </div>
 
-        <Messages initialMessages={initialMessages} sessionId={session?.user.id} chatPartner={chatPartner} sessionImg={session?.user.image} chatId={chatId} />
+        <Messages initialMessages={initialMessages} sessionId={session?.user.id} chatPartner={chatPartner} sessionImg={session.user.image} chatId={chatId} />
         <ChatInput chatId={chatId} chatPartner={chatPartner} />
   </div>
 }

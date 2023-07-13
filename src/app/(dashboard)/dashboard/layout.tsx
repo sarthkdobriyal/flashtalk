@@ -44,7 +44,7 @@ const Layout= async ({children}: LayoutProps) => {
     const friends = await getFriendsByUserId(session.user.id)
 
 
-    const unseenRequestCount = (await fetchRedis('smembers', `user:${session.user.id}:incoming_friend_requests`)).length as User[]
+    const unseenRequestCount = ((await fetchRedis('smembers', `user:${session.user.id}:incoming_friend_requests`)) as User[]).length
 
 
   return <div className='w-full flex h-screen bg-bgcolor'>
@@ -124,7 +124,7 @@ const Layout= async ({children}: LayoutProps) => {
                         </div>
                     </div>
                     
-                    <SignOutButton className='h-full' />
+                    <SignOutButton className='h-full aspect-square' />
                     
                 </li>
             </ul>

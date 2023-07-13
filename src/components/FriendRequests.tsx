@@ -9,7 +9,7 @@ import { toPusherKey } from '@/lib/utils'
 
 interface FriendRequestsProps {
     IncomingFriendRequests: IncomingFriendRequest[],
-    sessionId: number,
+    sessionId: string,
 }
 
 const FriendRequests: FC<FriendRequestsProps> = ({
@@ -34,7 +34,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
                 setFriendRequests((prev) => [...prev, {
                     senderId: senderId,
                     senderEmail: senderEmail,
-                    senderImage: senderImage ? senderImage : null,
+                    senderImage: senderImage,
                     senderName: senderName
                 } ])
             }
@@ -54,7 +54,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
 
         }, [sessionId])
 
-    const acceptFriend = async (senderId) => {
+    const acceptFriend = async (senderId: string) => {
         await axios.post('/api/friends/accept', {id : senderId})
 
         setFriendRequests((prev) => prev.filter((req) => req.senderId !== senderId))
@@ -64,7 +64,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
     }
 
 
-    const denyFriend = async (senderId) => {
+    const denyFriend = async (senderId: string) => {
         await axios.post('/api/friends/deny', {id : senderId})
 
         setFriendRequests((prev) => prev.filter((req) => req.senderId !== senderId))
@@ -73,7 +73,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
 
     }
 
-    console.log(friendRequests)
+    
 
 
   return <>
@@ -99,7 +99,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
                     }
                     <div className='flex flex-col gap-1 leading-5 pl-3 pr-20' >
                     <p className='text-gray-300 font-baloo text-base'>{request.senderName}</p>
-                    <p className='text-gray-400 font-baloo text-sm'>{request.senderEmail}</p>
+                    <p className='text-gray-400 font-baloo text-sm'>{request.senderEmail}</p>    
                     </div>
                     <button onClick={() => acceptFriend(request.senderId)} aria-label='deny friend' className='w-8 h-8 bg-primary hover:bg-cyan-600 grid place-items-center rounded-full transition hover:shadow-md '><Check className='font-semibold text-gray-400 w-3/4 h-3/4'/></button>
                     <button onClick={() => denyFriend(request.senderId)} aria-label='accept friend' className='w-8 h-8 bg-red-500 hover:bg-red-900 grid place-items-center rounded-full transition hover:shadow-md '><X className='font-semibold text-gray-400   w-3/4 h-3/4' /></button>

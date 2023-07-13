@@ -49,7 +49,7 @@ const AddFriendButton: FC<AddFriendButtonProps> = ({}) => {
   }
 
 
-  const onSubmit = (data: formData) => {
+  const onSubmit = (data: FormData) => {
     addFriend(data.email)
   }
 
