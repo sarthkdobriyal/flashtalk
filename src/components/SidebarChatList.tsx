@@ -63,7 +63,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId, friends}) => {
             pusherClient.unbind('new_friend', newFriendHandler)
 
         }
-    }, [])
+    }, [pathname, sessionId, router])
 
   return <ul role='list' className='max-h-[25rem] overflow-y-auto -mx-2 space-y-1 '>
     {

@@ -44,7 +44,7 @@ const FriendRequestSidebarOption: FC<FriendRequestSidebarOptionProps> = ({
                 pusherClient.unbind('accept_request', denyRequestHandler )
             }
 
-        }, [])
+        }, [sessionId])
 
 
   return <Link href='/dashboard/requests'
