@@ -1,22 +1,42 @@
 'use client'
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { Message } from '@/lib/validations/message'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import Image from 'next/image'
+import {pusherClient} from '@/lib/pusher'
+import { toPusherKey } from '@/lib/utils'
 
 interface MessagesProps {
     initialMessages : Message[],
     sessionId: string,
     sessionImg: string | null | undefined,
-    chatPartner: User
+    chatPartner: User,
+    chatId: string
 }
 
-const Messages: FC<MessagesProps> = ({initialMessages, sessionId, sessionImg, chatPartner}) => {
+const Messages: FC<MessagesProps> = ({initialMessages, sessionId, sessionImg, chatPartner, chatId}) => {
 
     const scrollDownRef = useRef<HTMLDivElement>(null)
 
     const [messages , setMessages] = useState<Message[]>(initialMessages)
+
+    useEffect(() => {
+        pusherClient.subscribe(
+            toPusherKey(`chat:${chatId}`)
+        )
+        const messageHandler = (message: Message) => {
+            setMessages((prevMessages) => [message,...prevMessages])
+        }
+
+        pusherClient.bind('incoming_message', messageHandler )
+
+        return () => {
+            pusherClient.unsubscribe(toPusherKey(`chat:${chatId}`))
+            pusherClient.unbind('incoming_message', messageHandler )
+        }
+
+    }, [])
 
 
     const formatTimestamp = (timestamp) => {
@@ -64,6 +84,7 @@ const Messages: FC<MessagesProps> = ({initialMessages, sessionId, sessionImg, ch
                         })}>
                             <Image 
                                 fill
+                                sizes='100%'
                                 src={isCurrentUser ? (sessionImg as string): chatPartner.image}
                                 alt='profile picture'
                                 referrerPolicy='no-referrer'

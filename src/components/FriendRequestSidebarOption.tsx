@@ -30,10 +30,6 @@ const FriendRequestSidebarOption: FC<FriendRequestSidebarOptionProps> = ({
             pusherClient.subscribe(
                 toPusherKey(`user:${sessionId}:incoming_friend_requests`)
             )
-            pusherClient.subscribe(
-                toPusherKey(`user:${sessionId}:deny_request`)
-            )
-            pusherClient.subscribe(toPusherKey(`user:${sessionId}:accept_request`))
 
             pusherClient.bind('incoming_friend_requests', friendRequestHandler )
             pusherClient.bind('deny_request', denyRequestHandler )

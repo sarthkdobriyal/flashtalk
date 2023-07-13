@@ -4,6 +4,8 @@ import { fetchRedis } from '@/helper/redis'
 import { db} from '@/lib/db'
 import { Message, messageValidator } from '@/lib/validations/message'
 import { nanoid } from 'nanoid'
+import {pusherServer} from '@/lib/pusher'
+import { toPusherKey } from '@/lib/utils'
 
 export async function POST(req: Request) {
     try{
@@ -21,7 +23,8 @@ export async function POST(req: Request) {
         const isFriend = await fetchRedis('sismember', `user:${session.user.id}:friends`, friendId)
         if(!isFriend) return new Response('Unauthorized', {status: 401})
 
-        const sender = await fetchRedis('get', `user:${session.user.id}`) as User
+        const rawSender = await fetchRedis('get', `user:${session.user.id}`) as string
+        const sender = JSON.parse(rawSender) as User
         
         const timestamp = Date.now()
 
@@ -33,6 +36,14 @@ export async function POST(req: Request) {
         }
 
         const message = messageValidator.parse(messageData)
+
+        pusherServer.trigger(toPusherKey(`chat:${chatId}`), 'incoming_message', message)
+        pusherServer.trigger(toPusherKey(`user:${friendId}:chats`), 'new_message', {
+            
+            senderImage: sender.image,
+            senderName: sender.name,
+            ...message,
+        })
 
 
         await db.zadd(`chat:${chatId}:messages`, {

@@ -3,10 +3,19 @@ import { chatIdConstructor } from '@/lib/utils'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
+import {pusherClient} from '@/lib/pusher'
+import { toPusherKey } from '@/lib/utils'
+import { toast } from 'react-hot-toast'
+import UnseenChatToast from './UnseenChatToast'
 
 interface SidebarChatListProps {
     sessionId: string,
   friends: User[]
+}
+
+interface ExtendedMessage extends Message {
+    senderImage: string,
+    senderName: string
 }
 
 const SidebarChatList: FC<SidebarChatListProps> = ({sessionId, friends}) => {
@@ -23,6 +32,38 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId, friends}) => {
         }
     }, [pathname])
 
+    useEffect(() => {
+        pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`))
+        pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`))
+
+        const newFriendHandler = () => {
+            router.refresh()
+        }
+
+        const chatHandler = (message: ExtendedMessage) => {
+            console.log("Handler working", message)
+            const shoulNotify = pathname !== `/dashboard/chat/${chatIdConstructor(sessionId, message.senderId)}`
+            if(!shoulNotify){
+                return;
+            }
+            toast.custom((t) => (
+                <UnseenChatToast sessionId={sessionId} senderId={message.senderId} senderImage={message.senderImage} senderMessage={message.text} senderName={message.senderName} t={t}  /> 
+            ))
+            setUnseenMessages((prev) => [...prev, message])
+        }
+
+        pusherClient.bind('new_message', chatHandler)
+        pusherClient.bind('new_friend', newFriendHandler)
+        
+        
+        return () => {
+            pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:chats`))
+            pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`))
+            pusherClient.unbind('new_message', chatHandler)
+            pusherClient.unbind('new_friend', newFriendHandler)
+
+        }
+    }, [])
 
   return <ul role='list' className='max-h-[25rem] overflow-y-auto -mx-2 space-y-1 '>
     {
@@ -36,6 +77,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId, friends}) => {
                     <div className='relative h-8 w-8 bg-transparent rounded-full'>
                             <Image
                                 fill
+                                sizes='100%'
                                 referrerPolicy='no-referrer'
                                 className='rounded-full'
                                 src={friend.image || ''}

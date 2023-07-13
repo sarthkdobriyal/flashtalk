@@ -63,6 +63,7 @@ const page: FC = async ({params} : PageProps ) => {
                 <div className="relative w-8 sm:w-12 h-8 sm:h-12">
                     <Image 
                         fill
+                        sizes='100%'
                         referrerPolicy="no-referrer"
                         src={chatPartner.image}
                         alt={chatPartner.name}
@@ -83,7 +84,7 @@ const page: FC = async ({params} : PageProps ) => {
         </div>
     </div>
 
-        <Messages initialMessages={initialMessages} sessionId={session.user.id} chatPartner={chatPartner} sessionImg={session.user.image} />
+        <Messages initialMessages={initialMessages} sessionId={session.user.id} chatPartner={chatPartner} sessionImg={session.user.image} chatId={chatId} />
         <ChatInput chatId={chatId} chatPartner={chatPartner} />
   </div>
 }
