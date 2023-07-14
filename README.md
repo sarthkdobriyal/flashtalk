@@ -1,6 +1,4 @@
-Certainly! Here's a sample README for your project:
 
-```
 # flashTalk - Realtime Messaging Web Application
 
 flashTalk is a realtime messaging web application built with Next.js and styled with Tailwind CSS. It leverages various technologies to provide a seamless and interactive messaging experience. Users can sign in with their Google accounts, add friends using emails, and engage in real-time chat conversations.
@@ -72,6 +70,3 @@ Contributions to flashTalk are welcome! If you encounter any bugs, have feature 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-```
-
-Feel free to customize and modify the README according to your specific project requirements and style.
