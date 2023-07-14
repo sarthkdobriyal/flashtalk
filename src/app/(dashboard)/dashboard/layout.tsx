@@ -9,6 +9,7 @@ import SidebarChatList from '@/components/SidebarChatList'
 import { Icon, Icons } from '../../../components/Icons'
 import Image from 'next/image'
 import SignOutButton from '@/components/SignOutButton'
+import MobileChatLayout from '@/components/MobileChatLayout'
 import { fetchRedis } from '@/helper/redis'
 import { getFriendsByUserId } from '@/helper/getFriends'
 
@@ -48,8 +49,12 @@ const Layout= async ({children}: LayoutProps) => {
 
 
   return <div className='w-full flex h-screen bg-bgcolor'>
+
+    <div className='md:hidden'>
+        <MobileChatLayout />
+    </div>
     
-    <div className="flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-500 p-2 px-4">
+    <div className="hidden md:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-500 p-2 px-4">
 
         <Link href='/dashboard' className='flex h-16 shrink-0 items-center'>
             <Logo />
@@ -132,9 +137,8 @@ const Layout= async ({children}: LayoutProps) => {
 
     </div>
 
-    <aside className='container max-h-screen w-full'>
-    {children}
-
+    <aside className='container max-h-screen py-16 md:py-12  w-full '>
+        {children}
     </aside>
     
     </div>

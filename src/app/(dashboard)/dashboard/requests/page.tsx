@@ -33,7 +33,7 @@ const page = async () => {
       
       
   return <main className='pt-8 m-2'>
-  <h1 className='font-bold  font-baloo text-6xl text-pink-900 mb-20 '>Friend Requests</h1>
+  <h1 className='font-bold  font-bungeeInline text-6xl text-pink-900 mb-20 '>Friend Requests</h1>
   <div className="flex flex-col gap-4">
       <FriendRequests IncomingFriendRequests={incomingFriendRequests} sessionId={session.user.id} />
   </div>
