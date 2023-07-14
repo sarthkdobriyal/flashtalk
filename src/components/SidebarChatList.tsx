@@ -21,6 +21,7 @@ interface ExtendedMessage extends Message {
 const SidebarChatList: FC<SidebarChatListProps> = ({sessionId, friends}) => {
 
     const [unseenMessages, setUnseenMessages] = useState<Message[]>([])
+    const [activeChats, setActiveChats] = useState<User[]>(friends)
 
 
     const router = useRouter()
@@ -36,8 +37,8 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId, friends}) => {
         pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`))
         pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`))
 
-        const newFriendHandler = () => {
-            router.refresh()
+        const newFriendHandler = (newFriend: User) => {
+            setActiveChats((prev) => [...prev, newFriend])
         }       
   
         const chatHandler = (message: ExtendedMessage) => {
@@ -67,7 +68,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId, friends}) => {
 
   return <ul role='list' className='max-h-[25rem] overflow-y-auto -mx-2 space-y-1 '>
     {
-        friends.sort().map((friend) => {
+        activeChats.sort().map((friend) => {
             const unseenMessagesCount = unseenMessages.filter((msg) => msg.senderId === friend.id).length
             return <li key={friend.id} >
                 

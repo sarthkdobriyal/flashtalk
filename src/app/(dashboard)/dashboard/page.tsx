@@ -42,7 +42,7 @@ const Page = async () => {
 
     {
         friendsWithLastMessage.length === 0 ? (
-          <p className='text-2xl mt-4 text-accent '>Start a conversation with a friend to see it here</p>
+          <p className='text-xl mt-4 font-light text-accent '>Start a conversation with a friend to see it here</p>
         ): (
           friendsWithLastMessage.map( (friend) => (
 

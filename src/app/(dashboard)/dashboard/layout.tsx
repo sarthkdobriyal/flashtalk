@@ -6,25 +6,20 @@ import { getServerSession } from 'next-auth'
 import Logo from '@/components/ui/Logo'
 import FriendRequestSidebarOption from '@/components/FriendRequestSidebarOption'
 import SidebarChatList from '@/components/SidebarChatList'
-import { Icon, Icons } from '../../../components/Icons'
+import { Icon, Icons } from '@/components/Icons'
 import Image from 'next/image'
 import SignOutButton from '@/components/SignOutButton'
 import MobileChatLayout from '@/components/MobileChatLayout'
 import { fetchRedis } from '@/helper/redis'
 import { getFriendsByUserId } from '@/helper/getFriends'
+import { SidebarOption } from '../types/typings'
 
 
 interface LayoutProps {
 children: ReactNode
 }
 
-interface SidebarOption {
-    id: number,
-    name: string,
-    href: string,
-    Icon: Icon,
 
-}
 
 const sidebarOptions: SidebarOption[] = [
     {
@@ -51,7 +46,7 @@ const Layout= async ({children}: LayoutProps) => {
   return <div className='w-full flex h-screen bg-bgcolor'>
 
     <div className='md:hidden'>
-        <MobileChatLayout />
+        <MobileChatLayout friends={friends} unseenRequestCount={unseenRequestCount} session={session} sidebarOptions={sidebarOptions}  />
     </div>
     
     <div className="hidden md:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-500 p-2 px-4">
@@ -71,7 +66,7 @@ const Layout= async ({children}: LayoutProps) => {
 
         
 
-        <nav className="flex flex-1 flex-col">
+        <nav className="flex flex-1 flex-col">    
             <ul role='list' className='flex flex-1 flex-col gap-y-7'>
                 <li>
                     <SidebarChatList sessionId={session.user.id} friends={friends} />

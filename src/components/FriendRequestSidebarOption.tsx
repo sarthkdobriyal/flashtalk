@@ -32,15 +32,13 @@ const FriendRequestSidebarOption: FC<FriendRequestSidebarOptionProps> = ({
 
 
             const newFriendHandler = () => {
-                console.log("sidebar handler")
                 setUnseenRequests((prev) => prev - 1)
-                router.refresh()
+                
             } 
 
             
             const friendRequestHandler = ({senderId, senderEmail, senderImage, senderName}: IncomingFriendRequest) => {
                 setUnseenRequests((prev) => prev + 1)
-                console.log("friend request handdler sidebar")
             }
 
             pusherClient.bind('incoming_friend_requests', friendRequestHandler )
@@ -50,8 +48,8 @@ const FriendRequestSidebarOption: FC<FriendRequestSidebarOptionProps> = ({
             return () => {
                 pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:incoming_friend_requests`))
                 pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`))
-                pusherClient.unbind('new_friend',newFriendHandler )
                 pusherClient.unbind('incoming_friend_requests', friendRequestHandler )
+                pusherClient.unbind('new_friend',newFriendHandler )
 
             }
 
