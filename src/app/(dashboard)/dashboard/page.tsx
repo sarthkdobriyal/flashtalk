@@ -23,7 +23,7 @@ const Page = async () => {
         `chat:${chatIdConstructor(session.user.id, friend.id)}:messages`,
         -1,
         -1
-      )) as strihng[];
+      )) as string[];
 
       const lastMessage = JSON.parse(lastMessageRaw) as Message;
 

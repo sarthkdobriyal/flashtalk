@@ -12,7 +12,7 @@ import SignOutButton from '@/components/SignOutButton'
 import MobileChatLayout from '@/components/MobileChatLayout'
 import { fetchRedis } from '@/helper/redis'
 import { getFriendsByUserId } from '@/helper/getFriends'
-import { SidebarOption } from '../types/typings'
+import { SidebarOption } from '@/types/typings'
 
 
 interface LayoutProps {

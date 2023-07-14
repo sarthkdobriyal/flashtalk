@@ -10,8 +10,9 @@ import SignOutButton from '@/components/SignOutButton'
 import SidebarChatList from '@/components/SidebarChatList'
 import FriendRequestSidebarOption from '@/components/FriendRequestSidebarOption'
 import Image from 'next/image'
-import { SidebarOption } from '../types/typings'
+import { SidebarOption } from '@/types/typings'
 import { usePathname } from 'next/navigation'
+import { Session } from 'next-auth'
 
 interface MobileChatLayoutProps {
   friends: User[]
