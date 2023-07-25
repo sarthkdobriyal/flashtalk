@@ -31,6 +31,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
             
 
             const friendRequestHandler = ({senderId, senderEmail, senderImage, senderName}: IncomingFriendRequest) => {
+                console.log("friendReqwuestHandler")
                 setFriendRequests((prev) => [...prev, {
                     senderId: senderId,
                     senderEmail: senderEmail,

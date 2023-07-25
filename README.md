@@ -5,6 +5,9 @@ Certainly! Here's a sample README for your project:
 
 flashTalk is a realtime messaging web application built with Next.js and styled with Tailwind CSS. It leverages various technologies to provide a seamless and interactive messaging experience. Users can sign in with their Google accounts, add friends using emails, and engage in real-time chat conversations.
 
+## Demo
+<iframe src="https://www.veed.io/embed/d339c3a5-4986-425b-a1f5-9025ff1d12c6" width="744" height="504" frameborder="0" title="flashtalk demo" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
 ## Features
 
 - Realtime messaging: Chat with friends in real-time, enabling instant communication.
