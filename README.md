@@ -7,9 +7,11 @@ flashTalk is a realtime messaging web application built with Next.js and styled 
 
 ## Demo
 <video>
-  <source src="https://veed.io/view/d339c3a5-4986-425b-a1f5-9025ff1d12c6" type="video/mp4">
+  <source src="" type="video/mp4">
   Your browser does not support the video tag.
 </video>
+[![Click here for demo](https://github.com/sarthkdobriyal/flashtalk/blob/master/public/snapshot.png)](https://veed.io/view/d339c3a5-4986-425b-a1f5-9025ff1d12c6)
+
 
 ## Features
 
