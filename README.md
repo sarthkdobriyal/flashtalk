@@ -2,11 +2,10 @@
 
 flashTalk is a realtime messaging web application built with Next.js and styled with Tailwind CSS. It leverages various technologies to provide a seamless and interactive messaging experience. Users can sign in with their Google accounts, add friends using emails, and engage in real-time chat conversations.
 
-## Demo
+## Video Demo
 
-![snapshot](https://raw.githubusercontent.com/sarthkdobriyal/flashtalk/master/public/snapshot.png)
+[![Click here to opne demo](https://raw.githubusercontent.com/sarthkdobriyal/flashtalk/master/public/snapshot.png)](https://www.veed.io/view/d339c3a5-4986-425b-a1f5-9025ff1d12c6?panel=share)
 
-[Video Demo](https://www.veed.io/view/d339c3a5-4986-425b-a1f5-9025ff1d12c6?panel=share)
 
 
 ## Features
