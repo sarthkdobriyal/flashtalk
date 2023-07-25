@@ -1,10 +1,15 @@
+Certainly! Here's a sample README for your project:
 
+```
 # flashTalk - Realtime Messaging Web Application
 
 flashTalk is a realtime messaging web application built with Next.js and styled with Tailwind CSS. It leverages various technologies to provide a seamless and interactive messaging experience. Users can sign in with their Google accounts, add friends using emails, and engage in real-time chat conversations.
 
 ## Demo
-<iframe src="https://www.veed.io/embed/d339c3a5-4986-425b-a1f5-9025ff1d12c6" width="744" height="504" frameborder="0" title="flashtalk demo" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<video>
+  <source src="https://veed.io/view/d339c3a5-4986-425b-a1f5-9025ff1d12c6" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 ## Features
 
@@ -73,3 +78,6 @@ Contributions to flashTalk are welcome! If you encounter any bugs, have feature 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+```
+
+Feel free to customize and modify the README according to your specific project requirements and style.
